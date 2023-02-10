@@ -2,45 +2,31 @@ package com.CollaberaOracleCapstoneProject.CollaberaOracleCapstoneProject;
 
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Service
-public class GetMovies {
-
+    @Service
+public class GetAllAdminMovies {
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
     static final String USER = "adminaziz";
     static final String PASS = "sMArt123_x";
-    public List<String> getMovies(String movieName) {
-        List<String> movieID = new ArrayList<>();
-        List<String> tmdbID = new ArrayList<>();
-        List<String> tmdbIDs = new ArrayList<>();
-        List<String> testIDS = new ArrayList<>();
+    public List<String> getAllAdminMovies() {
+        List<String> movieTMDBID = new ArrayList<>();
+
+        System.out.println("Initiaing methodd of getting all movies tmdbid");
+
+        movieTMDBID = RunQuery("SELECT * FROM filtered_movies_tmdb_medium_shahib ORDER BY tmdbid DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY" );
+
+        System.out.println(movieTMDBID);
+
+        return movieTMDBID;
+    }
 
 
-        tmdbIDs = RunQuery("select tmdbid from filtered_movies_medium_tmdbid where lower(title) like '%"+movieName.toLowerCase() +"%'", "tmdbid");
 
-            System.out.println("The imdb ID's for the respected movies are: ");
-        for(int i = 0; i < tmdbIDs.size(); i++) {
-            System.out.println(tmdbIDs.get(i));
-        }
-
-        if(movieID.size() > 1) {
-            return tmdbIDs;
-        } else if(tmdbIDs.size() == 0) {
-            System.out.println("No movies imdbid found");
-            tmdbIDs = null;
-            return tmdbIDs;
-        } else {
-            return tmdbIDs;
-        }
-
-}
-    static List<String> RunQuery (String myQuery, String myColumn){
+    static List<String> RunQuery (String myQuery){
         Connection conn = null;
         Statement stmt = null;
         List<String> result = new ArrayList<>();
@@ -51,10 +37,11 @@ public class GetMovies {
 
             String sql = myQuery;
             ResultSet rs = stmt.executeQuery(sql);
-
             while (rs.next()) {
-                result.add(rs.getString(myColumn));
+                result.add(rs.getString("tmdbid"));
+
             }
+
             rs.close();
 
         } catch (SQLException se) {
@@ -64,7 +51,7 @@ public class GetMovies {
         } finally {
             try {
                 if (stmt != null)
-                    conn.close();
+                    stmt.close();
             } catch (SQLException se) {
             }
             try {
@@ -78,3 +65,4 @@ public class GetMovies {
         return result;
     }
 }
+

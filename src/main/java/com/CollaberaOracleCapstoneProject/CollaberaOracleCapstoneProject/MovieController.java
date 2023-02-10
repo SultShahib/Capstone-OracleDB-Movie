@@ -27,6 +27,16 @@ public class MovieController {
     @Autowired
     GetAllMovies getAllMovies;
 
+    @Autowired
+    SaveMovie saveMovie;
+
+    @Autowired
+    GetAllAdminMovies getAllAdminMovies;
+
+    @Autowired
+    AdminDeleteMovie adminDeleteMovie;
+
+
     @GetMapping("/hello/{movieName}")
     public ResponseEntity<List<String>> getSimilarMovies(@PathVariable String movieName) {
         List<String> moviesFound = findMovies.findSimilarMovies(movieName);
@@ -70,6 +80,27 @@ public class MovieController {
         HttpHeaders responseHeaders = new HttpHeaders();
 
         return new ResponseEntity<>(allMoviesTMDBID, responseHeaders, 200);
+
+    }
+
+    @GetMapping("/getAdminMovies")
+    public ResponseEntity<List<String>> getAllAdminMovies() {
+        List<String> allMoviesTMDBID = getAllAdminMovies.getAllAdminMovies();
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        return new ResponseEntity<>(allMoviesTMDBID, responseHeaders, 200);
+
+    }
+
+    @PostMapping("/saveAdminMovie/{tmdbid}")
+    public void saveAdminMovie( @PathVariable String tmdbid) {
+         saveMovie.saveMovie(tmdbid);
+
+    }
+
+    @DeleteMapping ("/deleteAdminMovie/{title}")
+    public void deleteAdminMovie(@PathVariable String title) {
+         adminDeleteMovie.adminDeleteMovie(title);
 
     }
 }

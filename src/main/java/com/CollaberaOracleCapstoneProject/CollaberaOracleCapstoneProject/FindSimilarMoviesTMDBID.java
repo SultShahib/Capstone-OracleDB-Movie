@@ -13,7 +13,6 @@ public class FindSimilarMoviesTMDBID {
     static final String USER = "adminaziz";
     static final String PASS = "sMArt123_x";
     public List<String> findSimilarMoviesTMDBID(String tmdbid) {
-//    public List<String> findSimilarMoviesTMDBID(String movieName) {
         List<String> similarIDs = new ArrayList<>();
         List<String> similarTitle = new ArrayList<>();
         List<String> similarTitle2 = new ArrayList<>();
@@ -22,84 +21,29 @@ public class FindSimilarMoviesTMDBID {
         List<String> movieID = new ArrayList<>();
         List<String> movieTitle = new ArrayList<>();
 
-
-//        movieNames = RunQuery("select title from movies where lower(title) like '%"+movieName.toLowerCase() +"%'", "title");
-
-        System.out.println("FindSimilarMoviesTMDBID Starting");
-
         movieTitle = RunQuery("select title from filtered_movies_medium_tmdbid where tmdbid=" + tmdbid, "title");
-
-        System.out.println("Found single movie title: " + movieTitle);
-
         movieID = RunQuery("select movieid from filtered_movies_medium_tmdbid where lower(title) like '%"+movieTitle.get(0).toLowerCase() +"%'", "movieid");
 
-        for(int i = 0; i < movieID.size(); i++) {
-
-        System.out.println("Found movie id from filtered_movies_medium_tmdbid: " + movieID.get(i));
-        }
-//        System.out.println("Testing for errors, delete me later");
-//        System.out.println("Movie name: " + movieName);
-//        System.out.println("All movie Names name: " + movieNames);
-//        System.out.println("Testing: Find similar movies using movie name");
 
         if (movieID.size() > 1) {
-//            System.out.println("Your search for " + movieName + " returned:" );
-//            for (int i = 0 ; i < movieNames.size(); i++){
-//                System.out.println(movieNames.get(i));
-//            }
-//            return movieNames;
-
-
-//            movieID = RunQuery("select movieid from movies where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-
             similarIDs = RunQuery("Select movie_id from pearsons_correlations where ID_"+ movieID.get(0) +" > 0.5", "movie_id");
 
-            System.out.println("Since you liked "+tmdbid+", you may also like: ");
             for (int i = 0 ; i < similarIDs.size(); i++){
-//                similarTitle2 = RunQuery("select title from movies where movieid = "+similarIDs.get(i), "title");
                 similarTitle2 = RunQuery("select tmdbid from filtered_movies_medium_tmdbid where movieid = "+similarIDs.get(i), "tmdbid");
                 similarTitle.add(similarTitle2.get(0));
-                //System.out.println(similarIDs.get(i));
-//                for (int j = 0 ; j < similarTitle.size(); j++){
-//                    System.out.println(similarTitle.get(j));
-//                }
             }
 
-            System.out.println(similarTitle.size());
             return similarTitle;
         } else if(movieID.size() == 0) {
             System.out.println("Your search for " + tmdbid + "returned no results!!!" );
             return movieID;
         } else  {
 
-
-//            movieID = RunQuery("select movieid from movies where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-//            movieID = RunQuery("select movieid from filtered_movies_medium_tmdbid where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-            System.out.println("The movieID are ");
-//            for(int i = 0; i < movieID.size(); i++) {
-//                System.out.println(movieID.get(i));
-//            }
-
-
             similarIDs = RunQuery("Select movie_id from pearsons_correlations where ID_"+ movieID.get(0) +" > 0.5", "movie_id");
-            System.out.println("The SimilarID's are ");
-//            for(int i = 0; i < similarIDs.size(); i++) {
-//                System.out.println(similarIDs.get(i));
-//            }
-
-
-            System.out.println("Since you liked "+tmdbid+", you may also like: ");
             for (int i = 0 ; i < similarIDs.size(); i++){
-//                similarTitle2 = RunQuery("select title from movies where movieid = "+similarIDs.get(i), "title");
                 similarTitle2 = RunQuery("select tmdbid from filtered_movies_medium_tmdbid where movieid = "+similarIDs.get(i), "tmdbid");
                 similarTitle.add(similarTitle2.get(0));
-                //System.out.println(similarIDs.get(i));
-//                for (int j = 0 ; j < similarTitle.size(); j++){
-//                    System.out.println(similarTitle.get(j));
-//                }
             }
-
-            System.out.println(similarTitle.size());
             return similarTitle;
         }
     }
