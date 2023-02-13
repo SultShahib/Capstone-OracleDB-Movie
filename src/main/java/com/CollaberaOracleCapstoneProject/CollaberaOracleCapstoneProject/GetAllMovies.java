@@ -10,24 +10,20 @@ import java.util.List;
 public class GetAllMovies {
 
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-    static final String USER = "adminaziz";
-    static final String PASS = "sMArt123_x";
+    static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+    static final String USER = "Admin";
+    static final String PASS = "Password123";
     public List<String> getAllMovies(String number_of_rows) {
      List<String> movieTMDBID = new ArrayList<>();
 
-        System.out.println("Initiaing methodd of getting all movies tmdbid");
-
-        movieTMDBID = RunQuery("select tmdbid from filtered_movies_medium_tmdbid fetch first " + number_of_rows + "rows only", "tmdbid");
-
-        System.out.println("Fetching first 450 rows of tmdbid complete");
+        movieTMDBID = ExecuteQuery("select tmdbid from filtered_movies_medium_tmdb fetch first " + number_of_rows + "rows only", "tmdbid");
 
         return movieTMDBID;
     }
 
 
 
-    static List<String> RunQuery (String myQuery, String myColumn){
+    static List<String> ExecuteQuery (String myQuery, String myColumn){
         Connection conn = null;
         Statement stmt = null;
         List<String> result = new ArrayList<>();

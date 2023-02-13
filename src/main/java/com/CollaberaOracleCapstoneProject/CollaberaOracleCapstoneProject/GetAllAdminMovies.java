@@ -9,17 +9,13 @@ import java.util.List;
     @Service
 public class GetAllAdminMovies {
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-    static final String USER = "adminaziz";
-    static final String PASS = "sMArt123_x";
+        static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+        static final String USER = "Admin";
+        static final String PASS = "Password123";
     public List<String> getAllAdminMovies() {
         List<String> movieTMDBID = new ArrayList<>();
 
-        System.out.println("Initiaing methodd of getting all movies tmdbid");
-
-        movieTMDBID = RunQuery("SELECT * FROM filtered_movies_tmdb_medium_shahib ORDER BY tmdbid DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY" );
-
-        System.out.println(movieTMDBID);
+        movieTMDBID = RunQuery("SELECT tmdbid FROM filtered_movies_medium_tmdb_shahib ORDER BY movieid DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY" );
 
         return movieTMDBID;
     }

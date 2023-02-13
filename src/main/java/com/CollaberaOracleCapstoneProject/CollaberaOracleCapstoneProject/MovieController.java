@@ -98,9 +98,9 @@ public class MovieController {
 
     }
 
-    @DeleteMapping ("/deleteAdminMovie/{title}")
-    public void deleteAdminMovie(@PathVariable String title) {
-         adminDeleteMovie.adminDeleteMovie(title);
+    @DeleteMapping ("/deleteAdminMovie/{tmdbid}")
+    public void deleteAdminMovie(@PathVariable String tmdbid) {
+         adminDeleteMovie.adminDeleteMovie(tmdbid);
 
     }
 }

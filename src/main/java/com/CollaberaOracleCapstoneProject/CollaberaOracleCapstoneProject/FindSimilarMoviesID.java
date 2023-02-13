@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 public class FindSimilarMoviesID {
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-    static final String USER = "adminaziz";
-    static final String PASS = "sMArt123_x";
+    static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+    static final String USER = "Admin";
+    static final String PASS = "Password123";
 
 
     @Autowired
@@ -23,7 +23,6 @@ public class FindSimilarMoviesID {
     GetMovies getMovies;
 
     public List<String> findSimilarMoviesID(String name) {
-        System.out.println("Starting: findSimilarMoviesID");
         List<String> getSimilarMoviesNames = findSimilarMovies.findSimilarMovies(name);
         List<String> getSimilarMoviesIMDBID = new ArrayList<>();
 
@@ -35,7 +34,6 @@ public class FindSimilarMoviesID {
 
             return getSimilarMoviesIMDBID;
         } else if(getSimilarMoviesNames.size() == 0) {
-            System.out.println("Your search for " + name + "returned no results!!!" );
             return getSimilarMoviesIMDBID;
             } else {
             List<String> imdbid = getMovies.getMovies(getSimilarMoviesNames.get(0));
@@ -47,7 +45,7 @@ public class FindSimilarMoviesID {
 
 
 }
-    static List<String> RunQuery (String myQuery, String myColumn){
+    static List<String> ExecureQuery(String myQuery, String myColumn){
         Connection conn = null;
         Statement stmt = null;
         List<String> result = new ArrayList<>();

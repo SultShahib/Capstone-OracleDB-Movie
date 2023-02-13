@@ -12,9 +12,9 @@ import java.util.List;
 public class GetMovies {
 
     static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-    static final String USER = "adminaziz";
-    static final String PASS = "sMArt123_x";
+    static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+    static final String USER = "Admin";
+    static final String PASS = "Password123";
     public List<String> getMovies(String movieName) {
         List<String> movieID = new ArrayList<>();
         List<String> tmdbID = new ArrayList<>();
@@ -22,9 +22,8 @@ public class GetMovies {
         List<String> testIDS = new ArrayList<>();
 
 
-        tmdbIDs = RunQuery("select tmdbid from filtered_movies_medium_tmdbid where lower(title) like '%"+movieName.toLowerCase() +"%'", "tmdbid");
+        tmdbIDs = ExecuteQuery("select tmdbid from filtered_movies_medium_tmdb where lower(title) like '%"+movieName.toLowerCase() +"%'", "tmdbid");
 
-            System.out.println("The imdb ID's for the respected movies are: ");
         for(int i = 0; i < tmdbIDs.size(); i++) {
             System.out.println(tmdbIDs.get(i));
         }
@@ -32,7 +31,6 @@ public class GetMovies {
         if(movieID.size() > 1) {
             return tmdbIDs;
         } else if(tmdbIDs.size() == 0) {
-            System.out.println("No movies imdbid found");
             tmdbIDs = null;
             return tmdbIDs;
         } else {
@@ -40,7 +38,7 @@ public class GetMovies {
         }
 
 }
-    static List<String> RunQuery (String myQuery, String myColumn){
+    static List<String> ExecuteQuery (String myQuery, String myColumn){
         Connection conn = null;
         Statement stmt = null;
         List<String> result = new ArrayList<>();

@@ -10,9 +10,9 @@ import java.util.List;
 public class FindSimilarMovies {
 
         static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-    static final String USER = "adminaziz";
-    static final String PASS = "sMArt123_x";
+    static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+    static final String USER = "Admin";
+    static final String PASS = "Password123";
     public List<String> findSimilarMovies(String movieName) {
         List<String> similarIDs = new ArrayList<>();
         List<String> similarTitle = new ArrayList<>();
@@ -22,75 +22,34 @@ public class FindSimilarMovies {
         List<String> movieID = new ArrayList<>();
 
 
-//        movieNames = RunQuery("select title from movies where lower(title) like '%"+movieName.toLowerCase() +"%'", "title");
-        movieNames = RunQuery("select movieid from filtered_movies_medium_tmdbid where lower(title) like '%"+movieName.toLowerCase() +"%'", "movieid");
-        System.out.println("Testing for errors, delete me later");
-        System.out.println("Movie name: " + movieName);
-        System.out.println("All movie Names name: " + movieNames);
-        System.out.println("Testing: Find similar movies using movie name");
+
+        movieNames = ExecuteQuery("select movieid from filtered_movies_medium_tmdb where lower(title) like '%"+movieName.toLowerCase() +"%'", "movieid");
+
 
         if (movieNames.size() > 1) {
-//            System.out.println("Your search for " + movieName + " returned:" );
-//            for (int i = 0 ; i < movieNames.size(); i++){
-//                System.out.println(movieNames.get(i));
-//            }
-//            return movieNames;
+            similarIDs = ExecuteQuery("Select movie_id from pearsons_correlation_medium where ID_"+ movieNames.get(0) +" > 0.5", "movie_id");
 
-
-//            movieID = RunQuery("select movieid from movies where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-
-            similarIDs = RunQuery("Select movie_id from pearsons_correlations where ID_"+ movieNames.get(0) +" > 0.5", "movie_id");
-
-            System.out.println("Since you liked "+movieName+", you may also like: ");
             for (int i = 0 ; i < similarIDs.size(); i++){
-//                similarTitle2 = RunQuery("select title from movies where movieid = "+similarIDs.get(i), "title");
-                similarTitle2 = RunQuery("select title from filtered_movies_medium_tmdbid where movieid = "+similarIDs.get(i), "title");
+                similarTitle2 = ExecuteQuery("select title from filtered_movies_medium_tmdb where movieid = "+similarIDs.get(i), "title");
                 similarTitle.add(similarTitle2.get(0));
-                //System.out.println(similarIDs.get(i));
-                for (int j = 0 ; j < similarTitle.size(); j++){
-                    System.out.println(similarTitle.get(j));
-                }
             }
-
-            System.out.println(similarTitle.size());
             return similarTitle;
+
         } else if(movieNames.size() == 0) {
-            System.out.println("Your search for " + movieName + "returned no results!!!" );
             return movieNames;
         } else  {
+            movieID = ExecuteQuery("select movieid from filtered_movies_medium_tmdb where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
+            similarIDs = ExecuteQuery("Select movie_id from pearsons_correlation_medium where ID_"+ movieID.get(0) +" > 0.5", "movie_id");
 
-
-//            movieID = RunQuery("select movieid from movies where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-            movieID = RunQuery("select movieid from filtered_movies_medium_tmdbid where lower(title) like '" + movieNames.get(0).toLowerCase() +"'", "movieid");
-            System.out.println("The movieID are ");
-            for(int i = 0; i < movieID.size(); i++) {
-                System.out.println(movieID.get(i));
-            }
-
-
-            similarIDs = RunQuery("Select movie_id from pearsons_correlations where ID_"+ movieID.get(0) +" > 0.5", "movie_id");
-            System.out.println("The SimilarID's are ");
-            for(int i = 0; i < similarIDs.size(); i++) {
-                System.out.println(similarIDs.get(i));
-            }
-
-
-            System.out.println("Since you liked "+movieName+", you may also like: ");
             for (int i = 0 ; i < similarIDs.size(); i++){
-//                similarTitle2 = RunQuery("select title from movies where movieid = "+similarIDs.get(i), "title");
-                similarTitle2 = RunQuery("select title from filtered_movies_medium_tmdbid where movieid = "+similarIDs.get(i), "title");
+                similarTitle2 = ExecuteQuery("select title from filtered_movies_medium_tmdb where movieid = "+similarIDs.get(i), "title");
                 similarTitle.add(similarTitle2.get(0));
-                //System.out.println(similarIDs.get(i));
-                for (int j = 0 ; j < similarTitle.size(); j++){
-                    System.out.println(similarTitle.get(j));
-                }
             }
 
-            System.out.println(similarTitle.size());
             return similarTitle;
         }
     }
-        static List<String> RunQuery (String myQuery, String myColumn){
+        static List<String> ExecuteQuery(String myQuery, String myColumn){
             Connection conn = null;
             Statement stmt = null;
             List<String> result = new ArrayList<>();

@@ -10,20 +10,16 @@ import java.util.List;
 public class SaveMovie  {
 
         static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-        static final String DB_URL = "jdbc:oracle:thin:@oracle-aziz.cilyihqptvjt.us-east-1.rds.amazonaws.com:1521:ORCL";
-        static final String USER = "adminaziz";
-        static final String PASS = "sMArt123_x";
+    static final String DB_URL = "jdbc:oracle:thin:@database-2.cmxecweo1rn2.ap-southeast-1.rds.amazonaws.com:1521:ORCL";
+    static final String USER = "Admin";
+    static final String PASS = "Password123";
         public void saveMovie(String tmdbid) {
-            List<String> movieID = new ArrayList<>();
-            List<String> tmdbIDs = new ArrayList<>();
             String values = "('" + tmdbid + "')";
-
-
-             RunQuery("insert into filtered_movies_tmdb_medium_shahib(tmdbid) values" + values);
-
+            
+             ExecuteQuery("insert into filtered_movies_medium_tmdb_shahib(tmdbid) values" + values);
 
         }
-        static void RunQuery (String myQuery){
+        static void ExecuteQuery (String myQuery){
             Connection conn = null;
             Statement stmt = null;
             List<String> result = new ArrayList<>();
