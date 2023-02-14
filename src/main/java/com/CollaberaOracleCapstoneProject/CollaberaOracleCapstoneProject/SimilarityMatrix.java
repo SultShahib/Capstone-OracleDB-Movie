@@ -12,7 +12,7 @@ public class SimilarityMatrix {
     public static void main(String[] args) throws Exception {
 
         // read CSV file from Movielens
-        BufferedReader reader = new BufferedReader(new FileReader("/Users/sultshahib/downloads/ratings.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader("/Users/sultshahib/downloads/ml-latest-small/ratings.csv"));
         String line = reader.readLine();
 
         // check for comma
@@ -26,6 +26,7 @@ public class SimilarityMatrix {
                 ratings.put(movieId, new HashMap<>());
             }
             ratings.get(movieId).put(userId, rating);
+            System.out.println(ratings.get(movieId).put(userId, rating));
         }
 
         reader.close();
@@ -36,6 +37,8 @@ public class SimilarityMatrix {
 //            Calculation is done by only selecting movies that have been rated by atleast 50 users
             if (movie.getValue().size() >= 50) {
                 filteredRatings.put(movie.getKey(), movie.getValue());
+                System.out.println(filteredRatings.put(movie.getKey(), movie.getValue()));
+
             }
         }
 

@@ -14,7 +14,6 @@ public class MovieController {
 
     @Autowired
     FindSimilarMovies findMovies;
-
     @Autowired
     GetMovies getMovies;
 
